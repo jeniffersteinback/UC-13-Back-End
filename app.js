@@ -1,6 +1,8 @@
 import carros2024 from './tabelacarros.js';
 import express from 'express';
 
+import { modeloCarro, modeloAtualizacaoCarro } from './validacao.js';
+
 const app = express();
 
 app.use(express.json());
@@ -27,8 +29,17 @@ app.get('/:sigla', (requisicao, resposta) => {
 
 app.post('/', (req, res) => {
     const novoCarro = req.body; // Obtém o corpo enviado para incluir um carro
+    //Joi
+    const { error } = modeloCarro.validate(novoCarro);
+    if (error) {
+        // Se houver erro retorna erro 400 (Bad Request).
+        res.status(400).send(error);
+        return ;
+    }
+
     carros2024.push(novoCarro); // Adiciona o novo carro à lista de carros.
-    res.status(200).send(novoCarro); // Retorna o carro adicionado com status 200 (Ok).
+    res.status(201).send(novoCarro); // Retorna o carro adicionado com status 201 (Ok).
+
 });
 
 app.put('/:sigla', (req, res) => {
@@ -42,6 +53,13 @@ app.put('/:sigla', (req, res) => {
         );
         return;
     };
+    // Joi
+    const { error } = modeloAtualizacaoCarro.validate(req.body);
+    if (error) {
+        // Se houver erro no modelo/validaçao retorna carro 
+        res.status(400).send(error);
+        return;
+    }
     const campos = Object.keys(req.body); //Obtem o corpo da requisição
     for (let campo of campos){
         carroSelecionado[campo] = req.body[campo]; //Atualiza o carro com a informação
