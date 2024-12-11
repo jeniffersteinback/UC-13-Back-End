@@ -3,13 +3,37 @@ import Joi from "joi";
 
 // Validação para inclusão de modelo carro
 export const modeloCarro = Joi.object({
-    nome: Joi.string().min(3).required(), // Nome do carro Min. 3 Caracter
-    sigla: Joi.string().length(3).required(), // Sigla do carro, 3 Caracter
-    potencia: Joi.number().min(1).required(), // Potencia mín de 1 CV
-    velocidadeMaxima: Joi.number().min(1).required(), // Velocidade min. de 1
-    consumo: Joi.number().min(0.1).required(), // Consumo min. de 0.1 
-    aceleracao: Joi.number().min(0).required(), // Aceleração min. de 0
-    preco: Joi.number().min(0).required(), // Preço min. de 0
+    nome: Joi.string().min(3).required().messages({
+        'string.min': 'O nome do carro deve ter pelo menos 3 caracteres',
+        'any.required': ' O nome do carro é Obrigatório',
+
+    }), // Nome do carro Min. 3 Caracter
+    sigla: Joi.string().length(3).required().messages({
+        'string.length': 'A sigla deve ter exatamente 3 caracteres.',
+        'any.required': ' A sigla é obrigatória',
+
+    }), // Sigla do carro, 3 Caracter
+    potencia: Joi.number().min(1).required().messages({
+        'number.min': 'A Potência deve ser maior ou igual a 1.',
+        'any.required': 'A Potência é obrigatório.',
+    }), // Potencia mín de 1 CV
+    velocidadeMaxima: Joi.number().min(1).required().messages({
+        'number.min': 'A velocidade máxima deve ser maior ou igual a 1.',
+        'any.required': 'A velocidade máxima é obrigatório.',
+    }), // Velocidade min. de 1
+    consumo: Joi.number().min(0.1).required().messages({
+        'number.min': 'O consumo deve ser maior ou igual a 0.1.',
+        'any.required': 'O consumo é obrigatório.',
+    }), // Consumo min. de 0.1 
+    aceleracao: Joi.number().min(0).required().messages({
+        'number.min': 'A aceleração deve ser maior ou igual a 0.',
+        'any.required': 'A aceleração  é obrigatório.',
+    }), // Aceleração min. de 0
+    
+    preco: Joi.number().min(0).required().messages({
+        'number.min': 'O preço  deve ser maior ou igual a 1.',
+        'any.required': 'O preço  é obrigatório.',
+    }), // Preço min. de 0
     
 });
 
